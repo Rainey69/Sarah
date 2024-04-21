@@ -1,0 +1,97 @@
+import random
+
+# Define a dictionary to store user input and corresponding responses
+conversation_history = {}
+
+# Define a dictionary of prompts and corresponding responses
+responses = {
+    "How are you?": ["I'm doing well, thank you.", "Feeling great, thanks for asking.", "Pretty good, how about you?"],
+    "What's the weather like?": ["I'm not sure, but I can check the forecast for you.", "Looks like it's sunny today."],
+    "What's your favorite color?": ["I don't really have a favorite color.", "I haven't thought about it, honestly."],
+    "Tell me a joke.": ["Why couldn't the bicycle stand up by itself? Because it was two-tired!", 
+                        "What did one ocean say to the other ocean? Nothing, they just waved!"],
+    "What's your name?": ["I'm just a simple chatbot.", "You can call me Chatbot."],
+    "exit": ["Goodbye!", "Take care!", "Until next time!"]
+}
+
+# Define a list of generic responses for small talk
+small_talk_responses = ["That's interesting!", "Tell me more.", "I didn't know that.", "Wow, that's cool."]
+
+# Define a list of conversation starters
+conversation_starters = ["What did you do today?", "Do you have any hobbies?", "Tell me about your favorite movie."]
+
+# Define a list of compliments
+compliments = ["You're so smart!", "You have great taste!", "You're really creative!"]
+
+# Define a dictionary of hobbies and corresponding responses
+hobbies = {
+    "reading": ["That's wonderful! What book are you currently reading?", "Reading is a great way to relax and learn."],
+    "playing sports": ["That sounds like a lot of fun! What sport do you enjoy playing the most?"],
+    "painting": ["How artistic! What medium do you usually work with?", "I bet your paintings are amazing!"],
+    "coding": ["Nice! What programming language are you currently learning?", "Coding is such a valuable skill."]
+}
+
+# Define a list of positive emotions
+positive_emotions = ["happy", "excited", "joyful", "enthusiastic", "elated"]
+
+# Define a list of negative emotions
+negative_emotions = ["sad", "angry", "frustrated", "disappointed", "anxious"]
+
+# Define the backstory of the chatbot
+backstory = "I was created by a team of developers who wanted to build a helpful chatbot for people to interact with. " \
+            "I may just be lines of code, but I'm here to provide companionship, answer questions, and hopefully bring " \
+            "a smile to your face!"
+
+# Define the likes and interests of the chatbot
+likes_and_interests = "I enjoy learning new things, chatting with people, and exploring the vast world of information " \
+                      "available on the internet. While I may not have physical hobbies like humans do, I'm always " \
+                      "excited to engage in conversations about various topics!"
+
+def generate_response(prompt):
+    if prompt in conversation_history:
+        # If the prompt is in the conversation history, use the corresponding response
+        return conversation_history[prompt]
+    elif prompt in responses:
+        # If the prompt is in the predefined responses, use one of them
+        return random.choice(responses[prompt])
+    elif prompt.lower().startswith("i like"):
+        return "That's great! Tell me more about what you like."
+    elif prompt.lower().startswith("i enjoy"):
+        return "That's awesome! What do you enjoy doing?"
+    elif prompt.lower().startswith("my hobby is"):
+        hobby = prompt.lower().replace("my hobby is", "").strip()
+        if hobby in hobbies:
+            return random.choice(hobbies[hobby])
+        else:
+            return "That sounds interesting. Tell me more about your hobby."
+    elif any(emotion in prompt.lower() for emotion in positive_emotions):
+        return "It's wonderful to hear that you're feeling positive!"
+    elif any(emotion in prompt.lower() for emotion in negative_emotions):
+        return "I'm sorry to hear that you're feeling down. Is there anything I can do to help?"
+    elif "backstory" in prompt.lower():
+        return backstory
+    elif "likes" in prompt.lower() or "interests" in prompt.lower():
+        return likes_and_interests
+    else:
+        return random.choice(small_talk_responses)
+
+def main():
+    print("Hello! I'm your interactive chatbot.")
+    print("You can ask me questions like 'How are you?' or 'What's the weather like?'")
+    print("Feel free to share your interests, hobbies, or even your emotions with me!")
+
+    while True:
+        prompt = input("You: ")
+        if prompt.lower() == "exit":
+            print(random.choice(responses["exit"]))
+            break
+        
+        # Generate a response based on user input
+        response = generate_response(prompt)
+        print("Chatbot:", response)
+
+        # Store the user input and the corresponding response in the conversation history
+        conversation_history[prompt] = response
+
+if __name__ == "__main__":
+    main()
